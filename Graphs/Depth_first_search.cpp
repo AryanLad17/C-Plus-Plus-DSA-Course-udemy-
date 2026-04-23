@@ -9,7 +9,7 @@ class DFS{
     public:
         DFS(){
             for (int i = 0; i < 10; i++)
-            visited[i] = 0;
+                visited[i] = 0;
         }
         void DFS1(int u,int a[][7],int n){
             if(visited[u]==0){

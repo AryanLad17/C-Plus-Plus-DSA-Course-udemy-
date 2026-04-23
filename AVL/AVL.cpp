@@ -228,7 +228,34 @@ void Display(struct Node *p)
         Display(p->rchild);
     }
 }
-
+void delete1(int key){
+    Node* child=root;
+    Node* parent=NULL;
+    while(child!=NULL && child->data!=key){
+        parent=child;
+        if(key<child->data)
+            child=child->lchild;
+        else
+            child=child->rchild;
+    }
+    if(child==NULL){
+        cout<<"Element not found"<<endl;
+        return;
+    }
+    if(parent==NULL){
+        root=NULL;
+        delete child;
+        return;
+    }
+    if(parent->lchild==child){
+        parent->lchild=child->lchild;
+        delete child;
+    }
+    else{
+        parent->rchild=child->rchild;
+        delete child;
+    }   
+}
 
 int main()
 {

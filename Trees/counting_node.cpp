@@ -1,4 +1,5 @@
 #include<iostream>
+#include<stack>
 #include<queue>
 using namespace std;
 struct Node{
@@ -40,6 +41,12 @@ class Count{
         }
         return 0;
     }
+    int sum1(Node* root){
+        if(root==NULL) return 0;
+        
+        return sum1(root->lchild)+sum1(root->rchild)+root->data;
+        
+    }
     int height(Node *p)
     {  
         int x,y;     
@@ -53,6 +60,26 @@ class Count{
         }
         return 0;
     }
+    int levelwise(Node* root){
+        queue<Node*> q;
+        q.push(root);
+        int level=0;
+        while(!q.empty()){
+            int size=q.size();
+            for(int i=0;i<size;i++){
+                Node* nn=q.front();
+                q.pop();
+                cout<<nn->data<<" ";
+                if(nn->lchild!=NULL)
+                    q.push(nn->lchild);
+                if(nn->rchild != NULL)
+                    q.push(nn->rchild);
+            }
+            cout<<endl;
+            level++;
+        }
+        cout<<"The level of tree :"<<level<<endl;
+    }
     int leaf(Node *p)
     {  
         int x,y;     
@@ -65,6 +92,34 @@ class Count{
                 return x+y;
         }
         return 0;
+    }
+    int nonleaf(Node* t){
+        if(t==NULL) return 0;
+    
+        int count = nonleaf(t->lchild) + nonleaf(t->rchild);
+        //non leaf node
+        if(t->lchild!=NULL || t->rchild!=NULL)
+            return 1+count;
+        //leaf node
+        return 0;
+    }
+    void perorder(Node* root){
+        if(root==NULL) return;
+        stack<Node*> st;
+        Node* curr=root;
+        while(!st.empty() || curr!=NULL){
+            if(curr!=NULL){
+                st.push(curr);
+                cout<<curr->data<<" ";
+                curr=curr->lchild;
+            }
+            else{
+                Node* temp=st.top();
+                st.pop();
+                curr=temp->rchild;
+        
+            }
+        }
     }
     public:
         Count():root(NULL){}

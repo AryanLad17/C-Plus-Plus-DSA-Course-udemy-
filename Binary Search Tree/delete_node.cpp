@@ -124,9 +124,119 @@ public:
         }
         return p;
     }
+    Node* delete1(Node* root,int key){
+        Node* curr=root;
+        Node* parent=NULL;
+        while(curr!=NULL&& curr->data!=key){
+            curr=parent;
+            if(curr->data>key)
+                curr=curr->lchild;
+            else
+                curr=curr->rchild;
+        }
+        if (curr == NULL) return root;
+        if(curr->lchild!=NULL && curr->rchild!=NULL){
+            Node* succparent=curr;
+            Node* succ=curr->rchild;
+            while(succ->lchild!=NULL){
+                succparent=succ;
+                succ=succ->lchild;
+            }
+            curr->data=succ->data;
+            curr=succ;
+            parent=succparent;
+        }
+        Node* child=(curr->lchild!=NULL) ? curr->lchild:curr->rchild;
+        if(parent==NULL){
+            delete curr;
+            return child;
+        }
+        if(parent->lchild==curr)
+            parent->lchild=child; 
+        else
+            parent->rchild=child; 
+        delete curr;
+        return root;
+    }
     void Delete(int key)
     {
         root = Delete(root, key);
+    }
+    Node *delete1(Node* root,int key){
+        Node* parent=NULL;
+        Node* curr=root;
+        while(curr && curr->data!=key){
+            parent=curr;
+            if(key<curr->data)
+                curr=curr->lchild;
+            else
+                curr=curr->rchild;
+        }
+        if(curr==NULL) return root;
+        //Node with 2 child left and right
+        if(curr->lchild && curr->rchild){
+            Node* succparent=curr;
+            Node* succ=curr->rchild;
+            while(succ->lchild){
+                succparent=succ;
+                succ=succ->lchild;
+            }
+            curr->data=succ->data;
+            curr=succ;
+            parent=succparent;
+        }
+        Node* child=NULL;
+        child=(curr->lchild) ? curr->lchild:curr->rchild;
+        if(parent==NULL){
+            delete curr;
+            return child;
+        }
+        if(parent->lchild==curr)
+            parent->lchild=child;
+        else
+            parent->rchild=child;
+        delete curr;
+        return root;
+    }
+    void delete1(int key){
+        root = delete1(root, key);
+    }
+    Node* delete2(Node* root,int key){
+        Node* parent=NULL;
+        Node* curr=root;
+        while(curr &&curr->data!=NULL){
+            parent=curr;
+            if(key<curr->data)
+                curr=curr->lchild;
+            else
+                curr=curr->rchild;
+        }
+        if(curr==NULL) return root;
+        if(curr->lchild && curr->rchild){
+            Node* succparent=curr;
+            Node* succ=curr->rchild;
+            while(succ->lchild){
+                succparent=succ;
+                succ=succ->lchild;
+
+                curr->data=succ->data;
+                curr=succ;
+                parent=succparent;
+            }
+        }
+        Node* child=NULL;
+        child=(curr->lchild) ? curr->lchild : curr->rchild;
+
+        if(parent==NULL){
+            delete curr;
+            return child;
+        }
+        if(parent->lchild==curr)
+            parent->lchild=child;
+        else
+            parent->rchild=child;
+        delete curr;
+        delete root;
     }
 };
 int main()
@@ -138,9 +248,13 @@ int main()
     b.insert(23);
     b.insert(90);
 
+    // b.inorder();cout<<endl;
+    // b.Delete(2);cout<<endl;
+    // b.height();cout<<endl;
     b.inorder();cout<<endl;
-    b.Delete(2);cout<<endl;
-    b.height();cout<<endl;
+    b.delete1(12);
     b.inorder();cout<<endl;
+
+
     return 0;
 }
